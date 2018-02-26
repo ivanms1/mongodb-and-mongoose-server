@@ -1,9 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
-const promotions = express.Router();
 
-promotions.use(bodyParser.json());
+
+const promoRouter = express.Router();
+
+promoRouter.use(bodyParser.json());
 
 promotions.route('/promotions/:id')
 .all((req,res,next) => {
@@ -26,7 +29,7 @@ promotions.route('/promotions/:id')
 	res.end(`Will delete promotion ${req.params.id}`)
 });
 
-promotions.route('/promotions')
+promoRouter.route('/promotions')
 .all((req,res,next) => {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/plain');
@@ -47,4 +50,4 @@ promotions.route('/promotions')
 });
 
 
-module.exports = promotions;
+module.exports = promoRouter;

@@ -8,13 +8,14 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var dishRouter = require('./routes/dishRouter');
-var promotions = require('./routes/promoRouter');
-var leaders = require('./routes/leaderRouter');
+var promoRouter = require('./routes/promoRouter');
+var leaderRouter = require('./routes/leaderRouter');
 
 const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 
 const Dishes = require('./models/dishes');
+const Promos = require('./models/promos')
 
 const url = 'mongodb://localhost:27017/conFusion';
 
@@ -39,8 +40,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/', dishRouter);
-app.use('/', promotions);
-app.use('/', leaders);
+app.use('/', promoRouter);
+app.use('/', leaderRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
