@@ -38,7 +38,7 @@ dishRouter.route('/dishes')
 		res.json(resp);
 	}, (err) => next(err))
 	.catch((err) => next(err))
-})
+});
 
 dishRouter.route('/dishes/:dishId')
 .get((req, res, next) => {

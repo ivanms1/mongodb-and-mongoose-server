@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 require('mongoose-currency').loadType(mongoose);
 const Currency = mongoose.Types.Currency;
 
-let promoSchema = new Schema({
+let leaderSchema = new Schema({
 	name: {
 		type: String,
 		required: true,
@@ -13,14 +13,13 @@ let promoSchema = new Schema({
 		type: String,
 		required: true
 	},
-	label: {
+	designation: {
 		type: String,
 		required: true
 	},
-	price: {
-		type: Currency,
-		required: true,
-		min: 0
+	abbr: {
+		type: String,
+		required: true
 	},
 	description: {
 		type: String,
@@ -35,6 +34,6 @@ let promoSchema = new Schema({
 	timestamps: true
 });
 
-let Promos = mongoose.model('Promo', promoSchema);
+let Leaders = mongoose.model('Leader', leaderSchema);
 
-module.exports = Promos;
+module.exports = Leaders;
