@@ -19,6 +19,7 @@ mongoose.Promise = require('bluebird');
 const Dishes = require('./models/dishes');
 const Promos = require('./models/promos');
 const Leaders = require('./models/leaders');
+const User = require('./models/user')
 
 const url = 'mongodb://localhost:27017/conFusion';
 
@@ -41,7 +42,7 @@ app.use(bodyParser.urlencoded({
 }));
 //app.use(cookieParser('12345-67890-09876-54321'));
 app.use(session({
-	name: 'mySession',
+	name: 'session-id',
 	secret: '12345-67890-09876-54321',
 	saveUninitialized: false,
 	resave: false,
@@ -49,35 +50,19 @@ app.use(session({
 
 }));
 
+app.use('/', index);
+app.use('/users', users);
+
 function auth(req, res, next) {
     console.log(req.session);
 
-    if (!req.session.user) {
-        let authHeader = req.headers.authorization;
-
-        if (!authHeader) {
+    if(!req.session.user) {
             let err = new Error('You are not authenticated');
-            res.setHeader('WWW-Authenticate', 'Basic');
-            err.status = 401;
+            err.status = 403;
             return next(err)
-        }
-
-        let auth = new Buffer(authHeader.split(' ')[1], 'base64').toString().split(':');
-        let user = auth[0];
-        let pass = auth[1];
-
-        if (user === 'admin' && pass === 'password') {
-        	req.session.user = 'admin';
-            next();
-        } else {
-            let err = new Error('You are not authenticated');
-            res.setHeader('WWW-Authenticate', 'Basic');
-            err.status = 401;
-           	next(err)
-        }
     }
     else {
-    	if(req.session.user === 'admin'){
+    	if(req.session.user === 'authenticated'){
     		next()
     	}
     	else {
@@ -93,8 +78,6 @@ app.use(auth);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
 app.use('/', dishRouter);
 app.use('/', promoRouter);
 app.use('/', leaderRouter);
